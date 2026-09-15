@@ -39,13 +39,13 @@ html, body {
 
 .contenido-aviso h2 {
   font-family: 'Comic Sans MS', cursive, sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   color: #ffd54f;
   margin-bottom: 8px;
 }
 
 .contenido-aviso p {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #fff9c4;
 }
 
@@ -89,13 +89,13 @@ html, body {
   z-index: 1;
 }
 
-/* --- CONTENEDOR DE TEXTO UBICADO MÁS ABAJO Y CENTRADO --- */
+/* --- CONTENEDOR DE TEXTO REUBICADO Y CENTRADO --- */
 .contenedor-texto {
   position: absolute;
-  top: 26%;            /* Posicionado más abajo para un centrado perfecto */
-  left: 4%;            /* Posicionamiento despejado del borde */
+  top: 20%;            /* Ajustado para acomodar el mayor tamaño de fuente */
+  left: 2%;            /* Margen aprovechado al máximo a la izquierda */
   z-index: 2;
-  width: 44%;          /* Mantiene el ancho ideal respecto al árbol */
+  width: 46%;          /* Espacio amplio en la franja izquierda */
   color: #3e2723;
   pointer-events: none;
   text-align: center;  /* Alineación centrada de todas las líneas */
@@ -109,47 +109,47 @@ html, body {
   opacity: 0;
 }
 
-/* --- ANIMACIONES DE TEXTO ACTIVADAS --- */
+/* --- ANIMACIONES DE TEXTO ACTIVADAS CON TIPOGRAFÍA MÁS GRANDE --- */
 .iniciar-animacion h1 {
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
-  font-size: clamp(1.4rem, 3.2vw, 2.7rem);
+  font-size: clamp(1.8rem, 4.2vw, 3.4rem); /* Título más grande */
   font-weight: bold;
   color: #1a0f00;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   line-height: 1.1;
   animation: aparecerTexto 1.2s ease-out 0.2s forwards, flotarLento 4s ease-in-out 1.4s infinite;
 }
 
 .iniciar-animacion h2 {
   font-family: 'Trebuchet MS', 'Lucida Sans', sans-serif;
-  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+  font-size: clamp(1.1rem, 2.4vw, 1.7rem); /* Subtítulo agrandado */
   font-style: italic;
   color: #4e342e;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   animation: aparecerTexto 1.2s ease-out 0.6s forwards, flotarMedio 3.6s ease-in-out 1.8s infinite;
 }
 
 .iniciar-animacion p {
   font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: clamp(0.78rem, 1.35vw, 1.1rem);
-  line-height: 1.4;
+  font-size: clamp(0.95rem, 1.8vw, 1.4rem); /* Poema mucho más legible y grande */
+  line-height: 1.45;
   color: #3e2723;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   animation: aparecerTexto 1.2s ease-out 1.1s forwards, flotarSuave 4.4s ease-in-out 2.3s infinite;
 }
 
 .iniciar-animacion h3 {
   font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-  font-size: clamp(0.85rem, 1.5vw, 1.2rem);
+  font-size: clamp(1.05rem, 2vw, 1.5rem); /* Dedicatoria agrandada */
   font-style: italic;
   color: #4e342e;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   animation: aparecerTexto 1.2s ease-out 1.6s forwards, flotarLento 3.8s ease-in-out 2.8s infinite;
 }
 
 .iniciar-animacion .destacado {
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
-  font-size: clamp(1.3rem, 2.6vw, 2.1rem);
+  font-size: clamp(1.6rem, 3.4vw, 2.7rem); /* Mensaje final destacado más grande */
   font-weight: bold;
   color: #d84315;
   display: inline-block;
