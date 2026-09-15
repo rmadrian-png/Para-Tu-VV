@@ -4,26 +4,80 @@
   box-sizing: border-box;
 }
 
-body, html {
+html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #111; /* Fondo oscuro exterior */
+  background-color: #111111;
+  font-family: sans-serif;
+}
+
+/* --- AVISO INTRODUCTORIO DE 3 SEGUNDOS --- */
+#aviso-girar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(26, 15, 0, 0.92);
+  color: #fffde7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  text-align: center;
+  padding: 20px;
+  animation: desvanecerAviso 0.8s ease-out 3s forwards;
+  pointer-events: none;
+}
+
+.contenido-aviso .icono-girar {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+  animation: animarGiro 1.8s infinite ease-in-out;
+}
+
+.contenido-aviso h2 {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 1.6rem;
+  color: #ffd54f;
+  margin-bottom: 8px;
+}
+
+.contenido-aviso p {
+  font-size: 1rem;
+  color: #fff9c4;
+}
+
+@keyframes animarGiro {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+
+@keyframes desvanecerAviso {
+  0% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+#pantalla-rotada {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* --- CONTENEDOR PRINCIPAL CON PROPORCIÓN DE COMPUTADORA (16:9) --- */
 .escena-panoramica {
   position: relative;
   width: 100vw;
-  height: 56.25vw; /* Mantiene la proporción 16:9 */
+  height: 56.25vw; /* Proporción 16:9 fija */
   max-height: 100vh;
-  max-width: 177.78vh; /* Evita que desborde el alto en laptops/pantallas largas */
+  max-width: 177.78vh;
   background: linear-gradient(to bottom, #fffde7 0%, #fff59d 100%);
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
 }
 
 #lienzoArbol {
@@ -35,15 +89,16 @@ body, html {
   z-index: 1;
 }
 
-/* --- CONTENEDOR DE TEXTO --- */
+/* --- CONTENEDOR DE TEXTO UBICADO MÁS ABAJO Y CENTRADO --- */
 .contenedor-texto {
   position: absolute;
-  top: 15%;
-  left: 6%;
+  top: 26%;            /* Posicionado más abajo para un centrado perfecto */
+  left: 4%;            /* Posicionamiento despejado del borde */
   z-index: 2;
-  max-width: 42%;
+  width: 44%;          /* Mantiene el ancho ideal respecto al árbol */
   color: #3e2723;
   pointer-events: none;
+  text-align: center;  /* Alineación centrada de todas las líneas */
 }
 
 .contenedor-texto h1,
@@ -54,67 +109,66 @@ body, html {
   opacity: 0;
 }
 
-/* --- ANIMACIONES ACTIVADAS --- */
+/* --- ANIMACIONES DE TEXTO ACTIVADAS --- */
 .iniciar-animacion h1 {
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
-  font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+  font-size: clamp(1.4rem, 3.2vw, 2.7rem);
   font-weight: bold;
   color: #1a0f00;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   line-height: 1.1;
   animation: aparecerTexto 1.2s ease-out 0.2s forwards, flotarLento 4s ease-in-out 1.4s infinite;
 }
 
 .iniciar-animacion h2 {
   font-family: 'Trebuchet MS', 'Lucida Sans', sans-serif;
-  font-size: clamp(1rem, 1.8vw, 1.4rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
   font-style: italic;
   color: #4e342e;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   animation: aparecerTexto 1.2s ease-out 0.6s forwards, flotarMedio 3.6s ease-in-out 1.8s infinite;
 }
 
 .iniciar-animacion p {
   font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: clamp(0.85rem, 1.35vw, 1.15rem);
-  line-height: 1.45;
+  font-size: clamp(0.78rem, 1.35vw, 1.1rem);
+  line-height: 1.4;
   color: #3e2723;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   animation: aparecerTexto 1.2s ease-out 1.1s forwards, flotarSuave 4.4s ease-in-out 2.3s infinite;
 }
 
 .iniciar-animacion h3 {
   font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-  font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+  font-size: clamp(0.85rem, 1.5vw, 1.2rem);
   font-style: italic;
   color: #4e342e;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   animation: aparecerTexto 1.2s ease-out 1.6s forwards, flotarLento 3.8s ease-in-out 2.8s infinite;
 }
 
 .iniciar-animacion .destacado {
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
-  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  font-size: clamp(1.3rem, 2.6vw, 2.1rem);
   font-weight: bold;
   color: #d84315;
   display: inline-block;
   animation: aparecerTexto 1.2s ease-out 2.1s forwards, flotarMedio 4.2s ease-in-out 3.3s infinite;
 }
 
-/* --- KEYFRAMES --- */
 @keyframes aparecerTexto {
-  0% { opacity: 0; transform: translateY(20px); }
+  0% { opacity: 0; transform: translateY(15px); }
   100% { opacity: 1; transform: translateY(0px); }
 }
 
 @keyframes flotarLento {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-5px); }
 }
 
 @keyframes flotarMedio {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-9px); }
+  50% { transform: translateY(-7px); }
 }
 
 @keyframes flotarSuave {
@@ -122,51 +176,22 @@ body, html {
   50% { transform: translateY(-4px); }
 }
 
-/* --- BLOQUEO OBLIGATORIO PARA CELULAR EN VERTICAL --- */
-#bloqueo-rotar {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #fffde7;
-  z-index: 999999;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 30px;
-}
+/* --- FORZAR ROTACIÓN HORIZONTAL EN PANTALLAS VERTICALES --- */
+@media (max-width: 767px) and (orientation: portrait) {
+  #pantalla-rotada {
+    width: 100vh;
+    height: 100vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center center;
+  }
 
-.icono-girar {
-  font-size: 4rem;
-  margin-bottom: 15px;
-  animation: rotarCelular 2s infinite ease-in-out;
-}
-
-#bloqueo-rotar h2 {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  color: #3e2723;
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-#bloqueo-rotar p {
-  font-family: sans-serif;
-  color: #5d4037;
-  font-size: 1rem;
-}
-
-@keyframes rotarCelular {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(90deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* Activa el bloqueo solo si la pantalla está en vertical */
-@media (orientation: portrait) {
-  #bloqueo-rotar {
-    display: flex;
+  .escena-panoramica {
+    width: 100vh;
+    height: 56.25vh;
+    max-height: 100vw;
+    max-width: 177.78vw;
   }
 }
