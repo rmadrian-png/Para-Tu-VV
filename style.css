@@ -12,7 +12,7 @@ html, body {
   font-family: sans-serif;
 }
 
-/* --- AVISO RECOMENDACIÓN DE COMPUTADORA (3 SEGUNDOS) --- */
+/* --- AVISO RECOMENDACIÓN DE COMPUTADORA --- */
 #aviso-girar {
   position: fixed;
   top: 0;
@@ -27,7 +27,13 @@ html, body {
   z-index: 99999;
   text-align: center;
   padding: 24px;
-  animation: desvanecerAviso 0.8s ease-out 3s forwards;
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+
+/* Ocultar aviso al pasar el tiempo o hacer clic */
+#aviso-girar.oculto {
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
@@ -50,16 +56,31 @@ html, body {
   color: #fff9c4;
   max-width: 480px;
   line-height: 1.45;
+  margin-bottom: 20px;
+}
+
+/* Botón grande dentro del aviso */
+.boton-inicio-audio {
+  background-color: #ffd54f;
+  color: #3e2723;
+  border: none;
+  padding: 12px 26px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 213, 79, 0.4);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.boton-inicio-audio:hover {
+  transform: scale(1.06);
+  background-color: #ffca28;
 }
 
 @keyframes flotarIcono {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-8px); }
-}
-
-@keyframes desvanecerAviso {
-  0% { opacity: 1; visibility: visible; }
-  100% { opacity: 0; visibility: hidden; }
 }
 
 /* --- CONTENEDOR PRINCIPAL --- */
@@ -92,16 +113,16 @@ html, body {
   z-index: 1;
 }
 
-/* --- CONTENEDOR DE TEXTO REUBICADO Y CENTRADO EN LA FRANJA IZQUIERDA --- */
+/* --- CONTENEDOR DE TEXTO --- */
 .contenedor-texto {
   position: absolute;
-  top: 20%;            /* Ubicación más abajo e ideal */
-  left: 2%;            
+  top: 20%;
+  left: 2%;
   z-index: 2;
-  width: 46%;          
+  width: 46%;
   color: #3e2723;
   pointer-events: none;
-  text-align: center;  /* Alineación centrada entre sí */
+  text-align: center;
 }
 
 .contenedor-texto h1,
@@ -112,7 +133,7 @@ html, body {
   opacity: 0;
 }
 
-/* --- ANIMACIONES DE TEXTO CON FUENTES Y TAMAÑO GRANDE --- */
+/* --- ANIMACIONES DE TEXTO --- */
 .iniciar-animacion h1 {
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
   font-size: clamp(1.8rem, 4.2vw, 3.4rem);
@@ -179,7 +200,7 @@ html, body {
   50% { transform: translateY(-4px); }
 }
 
-/* --- MANTIENE LA ROTACIÓN PANORÁMICA EN PANTALLAS VERTICALES DE CELULAR --- */
+/* --- MANTIENE LA ROTACIÓN PANORÁMICA EN CELULARES --- */
 @media (max-width: 767px) and (orientation: portrait) {
   #pantalla-rotada {
     width: 100vh;
@@ -197,4 +218,30 @@ html, body {
     max-height: 100vw;
     max-width: 177.78vw;
   }
+}
+
+/* --- BOTÓN FLOTANTE EN ESQUINA INFERIOR --- */
+.boton-audio {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  background-color: rgba(62, 39, 35, 0.85);
+  color: #ffd54f;
+  border: 2px solid #ffd54f;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.boton-audio:hover {
+  transform: scale(1.1);
+  background-color: #3e2723;
 }

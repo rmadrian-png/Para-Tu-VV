@@ -8,12 +8,15 @@
 </head>
 <body>
 
-  <!-- AVISO RECOMENDACIÓN COMPUTADORA (Se oculta solo a los 3 segundos) -->
+  <!-- AVISO RECOMENDACIÓN CON BOTÓN DE AUDIO INICIAL -->
   <div id="aviso-girar">
     <div class="contenido-aviso">
       <div class="icono-girar">💻✨</div>
       <h2>Una pequeña recomendación</h2>
       <p>Para una experiencia mucho más hermosa y completa, te recomiendo verlo en una computadora 💛</p>
+      
+      <!-- Botón para activar música desde el aviso -->
+      <button id="btnActivarMúsica" class="boton-inicio-audio">🎵 Activar Música</button>
     </div>
   </div>
 
@@ -38,6 +41,14 @@
       </div>
     </div>
   </div>
+
+  <!-- CONTROL DE AUDIO -->
+  <audio id="musicaFondo" loop preload="auto">
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Botón flotante inferior que queda tras pasar el aviso -->
+  <button id="btnAudio" class="boton-audio" title="Reproducir / Pausar">🎵</button>
 
   <script src="script.js"></script>
 </body>

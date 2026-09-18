@@ -32,13 +32,14 @@ function dibujarCorazon(x, y, tamano, color, angulo = 0) {
   ctx.restore();
 }
 
-function dibujarGirasol(girasol, progresoGeneral) {
+function dibujarGirasol(girasol, progresoGeneral, viento) {
   const altoTalloMax = girasol.altura;
   const baseY = window.innerHeight - 5;
 
   const pTallo = Math.min(Math.max((progresoGeneral - 0.1) / 0.65, 0), 1);
   if (pTallo <= 0) return;
 
+  const curvaViento = girasol.curva + Math.sin(viento + girasol.faseViento) * 12;
   const altoTalloActual = altoTalloMax * pTallo;
   const yFlor = baseY - altoTalloActual;
 
@@ -50,7 +51,7 @@ function dibujarGirasol(girasol, progresoGeneral) {
 
   ctx.beginPath();
   ctx.moveTo(girasol.x, baseY);
-  ctx.quadraticCurveTo(girasol.x + girasol.curva * pTallo, baseY - (altoTalloActual * 0.5), girasol.x + (girasol.curva * 0.8 * pTallo), yFlor);
+  ctx.quadraticCurveTo(girasol.x + curvaViento * pTallo, baseY - (altoTalloActual * 0.5), girasol.x + (curvaViento * 0.8 * pTallo), yFlor);
   ctx.stroke();
 
   if (pTallo > 0.4) {
@@ -63,7 +64,7 @@ function dibujarGirasol(girasol, progresoGeneral) {
 
   if (pTallo >= 0.8) {
     const pFlor = Math.min(Math.max((progresoGeneral - 0.6) / 0.35, 0), 1);
-    const xCentroFlor = girasol.x + (girasol.curva * 0.8 * pTallo);
+    const xCentroFlor = girasol.x + (curvaViento * 0.8 * pTallo);
     const tamanoFlor = girasol.tamano * pFlor;
 
     const numPetalos = 12;
@@ -104,7 +105,6 @@ function inicializarEscena() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  // Posicionamiento adaptativo si el móvil está en vertical u horizontal
   if (window.innerWidth < window.innerHeight) {
     centroX = window.innerWidth * 0.5;
     centroY = window.innerHeight * 0.55;
@@ -132,7 +132,8 @@ function inicializarEscena() {
       y: centroY + (hy * escalaCorazon * r) + (Math.random() * 16 - 8),
       tamano: Math.random() * 10 + 6,
       color: colores[Math.floor(Math.random() * colores.length)],
-      angulo: Math.random() * Math.PI
+      anguloBase: Math.random() * Math.PI,
+      faseViento: Math.random() * Math.PI * 2
     });
   }
 
@@ -177,7 +178,8 @@ function inicializarEscena() {
         x: posX,
         altura: Math.random() * 45 + 45,
         tamano: Math.random() * 8 + 12,
-        curva: (Math.random() * 16 - 8)
+        curva: (Math.random() * 16 - 8),
+        faseViento: Math.random() * Math.PI * 2
       });
     }
   }
@@ -262,6 +264,8 @@ function dibujarTroncoAnimado(progreso) {
 function animar() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  const viento = Date.now() * 0.002;
+
   if (progresoTronco < 1) {
     progresoTronco += 0.006;
     if (progresoTronco > 1) progresoTronco = 1;
@@ -270,7 +274,7 @@ function animar() {
   dibujarTroncoAnimado(progresoTronco);
 
   listaGirasoles.forEach(girasol => {
-    dibujarGirasol(girasol, progresoTronco);
+    dibujarGirasol(girasol, progresoTronco, viento);
   });
 
   const limiteSuelo = Math.floor(sueloPetalos.length * Math.min(progresoTronco * 1.2, 1));
@@ -286,7 +290,11 @@ function animar() {
 
     for (let i = 0; i < Math.min(indiceProgresoCopa, copasPetalos.length); i++) {
       const p = copasPetalos[i];
-      dibujarPetalo(p.x, p.y, p.tamano, p.color, p.angulo);
+      const anguloViento = p.anguloBase + Math.sin(viento + p.faseViento) * 0.18;
+      const offsetX = Math.sin(viento + p.faseViento) * 2;
+      const offsetY = Math.cos(viento + p.faseViento) * 1.5;
+      
+      dibujarPetalo(p.x + offsetX, p.y + offsetY, p.tamano, p.color, anguloViento);
     }
   }
 
@@ -303,15 +311,68 @@ inicializarEscena();
 
 window.addEventListener('resize', () => { inicializarEscena(); });
 
-// --- RETARDO GENERAL SINCRONIZADO ---
-// Se activa todo a los 3.2 segundos (cuando el aviso termina de desvanecerse)
+// --- CONTROL DE AUDIO E INTERACCIÓN ---
+const musica = document.getElementById('musicaFondo');
+const btnAudio = document.getElementById('btnAudio');
+const btnActivarMúsica = document.getElementById('btnActivarMúsica');
+const avisoGirar = document.getElementById('aviso-girar');
+
+function reproducirMusica() {
+  if (musica) {
+    musica.volume = 0.6;
+    
+    // Si la música está desde el inicio, salta al segundo 47
+    if (musica.currentTime < 1) {
+      musica.currentTime = 47;
+    }
+
+    const promesaPlay = musica.play();
+    
+    if (promesaPlay !== undefined) {
+      promesaPlay.then(() => {
+        if (btnAudio) btnAudio.textContent = '🎵';
+      }).catch(error => {
+        console.log("El navegador bloqueó el auto-play:", error);
+        if (btnAudio) btnAudio.textContent = '🔇';
+      });
+    }
+  }
+}
+
+// Al presionar el botón dentro del aviso inicial
+if (btnActivarMúsica) {
+  btnActivarMúsica.addEventListener('click', () => {
+    reproducirMusica();
+    avisoGirar.classList.add('oculto');
+  });
+}
+
+// Control manual del botón flotante inferior
+if (btnAudio && musica) {
+  btnAudio.addEventListener('click', () => {
+    if (musica.paused) {
+      reproducirMusica();
+      btnAudio.textContent = '🎵';
+    } else {
+      musica.pause();
+      btnAudio.textContent = '🔇';
+    }
+  });
+}
+
+// Ocultar aviso automáticamente a los 3.2s e iniciar escena
 setTimeout(() => {
-  // 1. Inicia el dibujo gráfico del árbol, flores y hojas
+  if (avisoGirar && !avisoGirar.classList.contains('oculto')) {
+    avisoGirar.classList.add('oculto');
+  }
+
+  // Iniciar escena gráfica y letras
   animar();
-  
-  // 2. Activa la animación CSS de entrada para las letras
   const contenedorTexto = document.querySelector(".contenedor-texto");
   if (contenedorTexto) {
     contenedorTexto.classList.add("iniciar-animacion");
   }
+
+  // Intento de reproducción automática por si el navegador lo permite sin clic
+  reproducirMusica();
 }, 3200);
